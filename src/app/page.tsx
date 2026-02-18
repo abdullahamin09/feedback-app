@@ -1,3 +1,4 @@
+import React, { Suspense } from "react";
 import Sidebar from "@/components/sidebar";
 import HomePage from "@/components/homePage";
 
@@ -8,9 +9,10 @@ export default function Home() {
         <Sidebar />
       </aside>
       <main className="flex-1 flex flex-col gap-6">
-        <HomePage />
+        <Suspense fallback={<div />}> 
+          <HomePage />
+        </Suspense>
       </main>
     </div>
   );
 }
-``
