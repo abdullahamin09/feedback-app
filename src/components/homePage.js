@@ -1,15 +1,14 @@
 'use client';
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import FeedbackModal from "@/components/feedbackModal";
 import SuggestionCard from "./cards/feedbackCard";
 import { useDispatch, useSelector } from "react-redux";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import path from "path";
 
-const ProductFeedbackApp = () => {
+const ProductFeedbackApp = ( { filterCategory, setFilterCategory } ) => {
     const [isModalVisible, setIsModalVisible] = React.useState(false);
+    // ui state local
     const [sortOption, setSortOption] = React.useState('Most Upvotes');
-
     const dispatch = useDispatch();
     const router = useRouter();
     const pathname = usePathname(); // gets current path
@@ -24,23 +23,12 @@ const ProductFeedbackApp = () => {
         // router.push('/'); 
     };
 
-
     // redux data
     const suggestions = useSelector((state) => state.feedback.suggestions);
 
-    // ui state local
-    const [filterCategory, setFilterCategory] = useState('All');
-    const [sortBY, setSortBY] = useState('Most Upvotes');
-
-    pathname === '/add' && openModal(); // Open modal if URL is /add
-
-    const roadmapCounts = useMemo(() => {
-        return {
-            planned: suggestions.filter((s) => s.status === 'Planned').length,
-            inProgress: suggestions.filter((s) => s.status === 'In-Progress').length,
-            live: suggestions.filter((s) => s.status === 'Live').length
-        };
-    }, [suggestions]);
+    useEffect(() => {
+        if (pathname === '/add') openModal();
+    }, [pathname]);
 
     const handleAdd = (payload) => {
         dispatch(addSuggestion(payload));
@@ -50,33 +38,18 @@ const ProductFeedbackApp = () => {
         dispatch(toggleUpvote(id));
     }
 
-    // Mock Data
-    // const suggestions = [
-    //     {
-    //         id: 1,
-    //         title: "Add tags for solutions",
-    //         desc: "Easier to search for solutions based on a specific stack.",
-    //         category: "Enhancement",
-    //         upvotes: 112,
-    //         comments: 2
-    //     },
-    //     {
-    //         id: 2,
-    //         title: "Add a dark theme option",
-    //         desc: "It would help people with light sensitivities and who prefer dark mode.",
-    //         category: "Feature",
-    //         upvotes: 99,
-    //         comments: 4
-    //     },
-    //     {
-    //         id: 3,
-    //         title: "Q&A sections are confusing",
-    //         desc: "The current layout makes it hard to distinguish between questions and answers.",
-    //         category: "UX",
-    //         upvotes: 52,
-    //         comments: 0
-    //     }
-    // ];
+    const handleView = (item) => {
+        router.push(`/details/${item.id}`);
+    }
+
+    const filtered = suggestions.filter((s) => filterCategory === 'All' || s.category === filterCategory);
+
+    const sorted = [...filtered].sort((a, b) => {
+        if (sortOption === 'Most Upvotes') return b.upvotes - a.upvotes;
+        if (sortOption === 'Least Upvotes') return a.upvotes - b.upvotes;
+        if (sortOption === 'Most Comments') return b.comments - a.comments;
+        if (sortOption === 'Least Comments') return a.comments - b.comments;
+    });
 
     return (
         <div className="">
@@ -115,6 +88,7 @@ const ProductFeedbackApp = () => {
                             desc={item.desc}
                             category={item.category}
                             comments={item.comments}
+                            onClick={() => handleView(item)}
                         />
                     ))
                 ) : (

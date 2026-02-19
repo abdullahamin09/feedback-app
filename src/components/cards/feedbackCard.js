@@ -1,6 +1,6 @@
-const FeedbackCard = ({ upvotes, title, desc, category, comments }) => {
+const FeedbackCard = ({ upvotes, title, desc, category, comments, onClick }) => {
   return (
-    <div className="bg-white p-7 rounded-xl flex items-center shadow-sm hover:cursor-pointer group mb-5 last:mb-0">
+    <div onClick={onClick} className="bg-white p-7 rounded-xl flex items-center shadow-sm hover:cursor-pointer group mb-5 last:mb-0">
       {/* Upvote Box */}
       <div className="bg-[#F2F4FF] group-hover:bg-[#CFD7FF] min-w-[40px] h-12 rounded-lg flex flex-col items-center justify-center mr-10 transition-colors">
         <span className="text-[#4661E6] text-xs font-bold">^</span>

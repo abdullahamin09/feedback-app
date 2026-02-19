@@ -2,7 +2,6 @@
 
 import { initialSuggestions, initialComments } from '@/data/initialData';
 import { createSlice } from "@reduxjs/toolkit";
-import { Replace, ReplaceAll } from 'lucide-react';
 
 const initialState = {
     suggestions: initialSuggestions,

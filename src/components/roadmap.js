@@ -1,4 +1,5 @@
-
+'use client';
+import { useRouter } from 'next/navigation';
 import CategoryFeedbackCard from './cards/categoryFeedbackCard';
 import { ArrowLeft, Plus } from 'lucide-react';
 
@@ -38,6 +39,7 @@ const CategorySection = ({ name, items, onVote }) => {
 
 // Main Feedback Board Component
 const FeedbackBoard = () => {
+  const router = useRouter();
   const feedbackItems = [
     {
       id: 1,
@@ -49,7 +51,7 @@ const FeedbackBoard = () => {
     },
     {
       id: 2,
-      category: "UI/UX", 
+      category: "UI/UX",
       title: "Improve mobile responsiveness",
       description: "The dashboard layout breaks on smaller screens",
       votes: 18,
@@ -90,13 +92,21 @@ const FeedbackBoard = () => {
     return acc;
   }, {});
 
+  const handleOnBack = (event) => {
+    event.preventDefault();
+    router.back();
+  }
+
   return (
     <div className="max-w-4xl mx-auto p-6 bg-gray-50 min-h-screen">
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
-        <button className="flex items-center text-gray-600 hover:text-gray-900 transition-colors">
+        <button
+          className="flex items-center group text-gray-600 hover:text-gray-900 transition-colors cursor-pointer"
+          onClick={handleOnBack}
+        >
           <ArrowLeft className="w-5 h-5 mr-2" />
-          Go Back
+          <span className='group-hover:underline'>Go Back</span>
         </button>
         <button className="flex items-center bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">
           <Plus className="w-5 h-5 mr-2" />

@@ -15,9 +15,9 @@ const FeedbackDetail = ({ feedback, onBack, onEdit }) => {
       <div className="flex justify-between items-center mb-6">
         <button
           onClick={onBack}
-          className="text-[#647196] font-bold hover:underline flex items-center gap-2"
+          className="text-[#647196] font-bold flex items-center gap-2 cursor-pointer group"
         >
-          <span>＜</span> Go Back
+          <span>＜</span><span className='group-hover:underline'> Go Back</span>
         </button>
         <Button
           onClick={onEdit}
