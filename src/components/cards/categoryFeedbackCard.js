@@ -1,8 +1,8 @@
 'use client';
-import  { useState } from 'react';
+import { useState } from 'react';
 import { ChevronUp, MessageCircle } from 'lucide-react';
 
-const CategoryFeedbackCard = ({ id, title, description, category, initialVotes = 12, comments = 0 }) => {
+const CategoryFeedbackCard = ({ id, title, description, category, status, statusColor, initialVotes = 12, comments = 0 }) => {
     const [voteCount, setVoteCount] = useState(initialVotes);
     const [hasVoted, setHasVoted] = useState(false);
 
@@ -18,22 +18,13 @@ const CategoryFeedbackCard = ({ id, title, description, category, initialVotes =
 
     return (
         <div className="bg-white rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow">
-            <div className="flex items-start gap-4">
-                {/* Voting Section */}
-                <div className="flex flex-col items-center">
-                    <button
-                        onClick={handleVote}
-                        className={`flex flex-col items-center px-3 py-2 rounded-lg transition-colors ${hasVoted
-                                ? 'bg-purple-100 hover:bg-purple-200'
-                                : 'bg-gray-50 hover:bg-gray-100'
-                            }`}
-                    >
-                        <ChevronUp className={`w-5 h-5 ${hasVoted ? 'text-purple-600' : 'text-gray-600'}`} />
-                        <span className={`font-bold ${hasVoted ? 'text-purple-600' : 'text-gray-900'}`}>
-                            {voteCount}
-                        </span>
-                        <span className="text-xs text-gray-500">Votes</span>
-                    </button>
+            <div className="flex flex-col items-start gap-4">
+                <div className="flex items-center gap-2 mb-1">
+                    <div className={`w-3 h-3 rounded-full ${statusColor?.dot || 'bg-gray-400'}`}>
+                    </div>
+                    <div className="text-sm capitalize">
+                        {status}
+                    </div>
                 </div>
 
                 {/* Content Section */}
@@ -51,10 +42,27 @@ const CategoryFeedbackCard = ({ id, title, description, category, initialVotes =
                     </span>
                 </div>
 
-                {/* Comments Section */}
-                <div className="flex items-center text-gray-500">
-                    <MessageCircle className="w-5 h-5 mr-1" />
-                    <span className="font-medium">{comments}</span>
+                {/* Voting Section */}
+                <div className="flex justify-between w-full">
+                    <div className="flex flex-col items-center">
+                        <button
+                            onClick={handleVote}
+                            className={`flex gap-1 items-center px-3 py-2 rounded-lg transition-colors ${hasVoted
+                                ? 'bg-purple-100 hover:bg-purple-200'
+                                : 'bg-gray-100 hover:bg-gray-200'
+                                }`}
+                        >
+                            <ChevronUp className={`w-5 h-5 ${hasVoted ? 'text-purple-600' : 'text-gray-600'}`} />
+                            <span className={`font-bold ${hasVoted ? 'text-purple-600' : 'text-gray-900'}`}>
+                                {voteCount}
+                            </span>
+                        </button>
+                    </div>
+                    {/* Comments Section */}
+                    <div className="flex items-center text-gray-500">
+                        <MessageCircle className="w-5 h-5 mr-1" />
+                        <span className="font-medium">{comments}</span>
+                    </div>
                 </div>
             </div>
         </div>

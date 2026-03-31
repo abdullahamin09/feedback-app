@@ -4,7 +4,7 @@ import FeedbackDetail from "@/components/feedbackDetail";
 import FeedbackModal from "@/components/feedbackModal";
 import { useRouter, useParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleUpvote, addComment } from "@/store/feedbackSlice";
+import { toggleUpvote, addComment, deleteSuggestion } from "@/store/feedbackSlice";
 
 export default function Page () {
     const router = useRouter();

@@ -41,7 +41,7 @@ const feedbackSlice = createSlice({
         deleteSuggestion: (state, action) => {
             const id = action.payload;
             state.suggestions = state.suggestions.filter((s) => s.id !== id);
-            delete state.comments[id];
+            state.comments = state.comments.filter((c) => c.suggestionId !== id);
         },
 
         toggleUpvote: (state, action) => {

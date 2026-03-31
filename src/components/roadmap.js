@@ -2,21 +2,33 @@
 import { useRouter } from 'next/navigation';
 import CategoryFeedbackCard from './cards/categoryFeedbackCard';
 import { ArrowLeft, Plus } from 'lucide-react';
-
-
+import { useDispatch, useSelector } from "react-redux";
 
 // Category Section Component
 const CategorySection = ({ name, items, onVote }) => {
+  let statusColor = {};
+  if (items[0]?.status === 'planned') {
+    statusColor = { dot: 'bg-orange-400', label: 'Ideas prioritized for research' };
+  } else if (items[0]?.status === 'in-progress') {
+    statusColor = { dot: 'bg-purple-500', label: 'Currently being developed' };
+  } else if (items[0]?.status === 'live') {
+    statusColor = { dot: 'bg-blue-400', label: 'Released features' };
+  }
   return (
     <div className="space-y-4">
       {/* Category Header */}
-      <div className="flex items-baseline">
-        <h3 className="text-xl font-semibold text-gray-800">
-          {name}
-        </h3>
-        <span className="ml-2 text-sm text-gray-500">
-          ({items.length})
-        </span>
+      <div >
+        <div className="flex items-baseline ">
+          <h3 className="text-xl font-semibold text-gray-800 capitalize">
+            {name}
+          </h3>
+          <span className="ml-2 text-sm text-gray-500">
+            ({items.length})
+          </span>
+        </div>
+        <div className="text-sm text-gray-500">
+          {statusColor.label}
+        </div>
       </div>
 
       {/* Feedback Items for this category */}
@@ -28,6 +40,8 @@ const CategorySection = ({ name, items, onVote }) => {
             title={item.title}
             description={item.description}
             category={item.category}
+            status={item.status}
+            statusColor={statusColor}
             initialVotes={item.votes}
             comments={item.comments}
           />
@@ -39,56 +53,17 @@ const CategorySection = ({ name, items, onVote }) => {
 
 // Main Feedback Board Component
 const FeedbackBoard = () => {
+  const dispatch = useDispatch();
+
   const router = useRouter();
-  const feedbackItems = [
-    {
-      id: 1,
-      category: "UI/UX",
-      title: "Add dark mode support",
-      description: "It would be great to have a dark mode option for late night coding sessions",
-      votes: 24,
-      comments: 8
-    },
-    {
-      id: 2,
-      category: "UI/UX",
-      title: "Improve mobile responsiveness",
-      description: "The dashboard layout breaks on smaller screens",
-      votes: 18,
-      comments: 12
-    },
-    {
-      id: 3,
-      category: "Feature Request",
-      title: "Export data to CSV",
-      description: "Allow users to export their feedback data in CSV format",
-      votes: 12,
-      comments: 5
-    },
-    {
-      id: 4,
-      category: "Feature Request",
-      title: "Integrate with Slack",
-      description: "Send notifications to Slack when new feedback is submitted",
-      votes: 8,
-      comments: 3
-    },
-    {
-      id: 5,
-      category: "Bug",
-      title: "Fix login authentication",
-      description: "Users are experiencing issues when logging in with Google",
-      votes: 32,
-      comments: 15
-    },
-  ];
+  const feedbackItems = useSelector((state) => state.feedback ? state.feedback.suggestions : []);
 
   // Group items by category
   const groupedItems = feedbackItems.reduce((acc, item) => {
-    if (!acc[item.category]) {
-      acc[item.category] = [];
+    if (!acc[item.status]) {
+      acc[item.status] = [];
     }
-    acc[item.category].push(item);
+    acc[item.status].push(item);
     return acc;
   }, {});
 
@@ -98,7 +73,7 @@ const FeedbackBoard = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-gray-50 min-h-screen">
+    <div className="max-w-7xl mx-auto p-6 bg-gray-50 min-h-screen">
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
         <button
@@ -120,7 +95,7 @@ const FeedbackBoard = () => {
       </div>
 
       {/* Categories and Feedback Items */}
-      <div className="space-y-8">
+      <div className="space-x-6 flex">
         {Object.entries(groupedItems).map(([categoryName, items]) => (
           <CategorySection
             key={categoryName}

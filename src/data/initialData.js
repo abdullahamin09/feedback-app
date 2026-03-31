@@ -7,7 +7,7 @@ export const initialSuggestions = [
     comments: 2,
     category: "Enhancement",
     upvoted: true,
-    status: "suggestion"
+    status: "planned"
   },
   {
     id: 2,
@@ -17,7 +17,7 @@ export const initialSuggestions = [
     comments: 4,
     category: "Feature",
     upvoted: false,
-    status: "suggestion"
+    status: "in-progress"
   },
   {
     id: 3,
@@ -27,7 +27,7 @@ export const initialSuggestions = [
     comments: 0,
     category: "UX",
     upvoted: false,
-    status: "suggestion"
+    status: "live"
   },
   {
     id: 4,
@@ -67,7 +67,7 @@ export const initialSuggestions = [
     comments: 2,
     category: "UX",
     upvoted: true,
-    status: "suggestion"
+    status: "live"
   },
   {
     id: 8,
@@ -77,7 +77,7 @@ export const initialSuggestions = [
     comments: 8,
     category: "Enhancement",
     upvoted: false,
-    status: "suggestion"
+    status: "in-progress"
   },
   {
     id: 9,
@@ -97,7 +97,7 @@ export const initialSuggestions = [
     comments: 0,
     category: "Enhancement",
     upvoted: true,
-    status: "suggestion"
+    status: "in-progress"
   },
   {
     id: 11,
@@ -107,7 +107,7 @@ export const initialSuggestions = [
     comments: 1,
     category: "UX",
     upvoted: false,
-    status: "suggestion"
+    status: "planned"
   },
   {
     id: 12,
@@ -137,7 +137,7 @@ export const initialSuggestions = [
     comments: 0,
     category: "UI",
     upvoted: false,
-    status: "suggestion"
+    status: "live"
   },
   {
     id: 15,
@@ -157,7 +157,7 @@ export const initialSuggestions = [
     comments: 3,
     category: "UX",
     upvoted: false,
-    status: "suggestion"
+    status: "in-progress"
   },
   {
     id: 17,
@@ -187,7 +187,7 @@ export const initialSuggestions = [
     comments: 1,
     category: "Feature",
     upvoted: false,
-    status: "suggestion"
+    status: "planned"
   },
   {
     id: 20,
@@ -197,7 +197,7 @@ export const initialSuggestions = [
     comments: 0,
     category: "UI",
     upvoted: false,
-    status: "suggestion"
+    status: "live"
   }
 ];
 
