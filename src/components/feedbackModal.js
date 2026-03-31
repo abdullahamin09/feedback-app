@@ -52,7 +52,7 @@ const FeedbackModal = ({ isVisible, onCancel, onSubmit, editingFeedback, onDelet
                 layout="vertical"
                 onFinish={handleFinish}
                 className="px-2 pb-4"
-                initialValues={{ category: 'Feature', status: 'Planned' }}
+                initialValues={{ category: 'feature', status: 'planned' }}
             >
                 {/* Feedback Title */}
                 <Form.Item
@@ -78,11 +78,11 @@ const FeedbackModal = ({ isVisible, onCancel, onSubmit, editingFeedback, onDelet
                         value={form.getFieldValue('category')}
                         onChange={(e) => form.setFieldsValue({ category: e })}
                     >
-                        <Select.Option value="Feature">Feature</Select.Option>
-                        <Select.Option value="UI">UI</Select.Option>
-                        <Select.Option value="UX">UX</Select.Option>
-                        <Select.Option value="Enhancement">Enhancement</Select.Option>
-                        <Select.Option value="Bug">Bug</Select.Option>
+                        <Select.Option value="feature">Feature</Select.Option>
+                        <Select.Option value="ui">UI</Select.Option>
+                        <Select.Option value="ux">UX</Select.Option>
+                        <Select.Option value="enhancement">Enhancement</Select.Option>
+                        <Select.Option value="bug">Bug</Select.Option>
                     </Select>
                 </Form.Item>
 
@@ -95,9 +95,9 @@ const FeedbackModal = ({ isVisible, onCancel, onSubmit, editingFeedback, onDelet
                         value={form.getFieldValue('status')}
                         onChange={(e) => form.setFieldsValue({ status: e })}
                     >
-                        <Select.Option value="Planned">Planned</Select.Option>
-                        <Select.Option value="In-Progress">In-Progress</Select.Option>
-                        <Select.Option value="Live">Live</Select.Option>
+                        <Select.Option value="planned">Planned</Select.Option>
+                        <Select.Option value="in-progress">In-Progress</Select.Option>
+                        <Select.Option value="live">Live</Select.Option>
                     </Select>
                 </Form.Item>
 

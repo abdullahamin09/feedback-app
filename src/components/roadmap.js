@@ -42,7 +42,7 @@ const CategorySection = ({ name, items, onVote }) => {
             category={item.category}
             status={item.status}
             statusColor={statusColor}
-            initialVotes={item.votes}
+            initialVotes={item.upvotes}
             comments={item.comments}
           />
         ))}
@@ -73,22 +73,7 @@ const FeedbackBoard = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-6 bg-gray-50 min-h-screen">
-      {/* Header */}
-      <div className="mb-6 flex items-center justify-between">
-        <button
-          className="flex items-center group text-gray-600 hover:text-gray-900 transition-colors cursor-pointer"
-          onClick={handleOnBack}
-        >
-          <ArrowLeft className="w-5 h-5 mr-2" />
-          <span className='group-hover:underline'>Go Back</span>
-        </button>
-        <button className="flex items-center bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">
-          <Plus className="w-5 h-5 mr-2" />
-          Add Feedback
-        </button>
-      </div>
-
+    <div className="max-w-7xl mx-auto p-6 min-h-screen">
       {/* Roadmap */}
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-gray-900">Roadmap</h2>

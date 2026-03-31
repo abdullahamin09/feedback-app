@@ -32,24 +32,7 @@ const FeedbackDetail = ({ feedback, comments, onSubmit, onBack, onEdit, onUpvote
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 md:p-10 font-sans bg-[#F2F4FF] min-h-screen">
-
-      {/* 1. Top Navigation Bar */}
-      <div className="flex justify-between items-center mb-6">
-        <button
-          onClick={onBack}
-          className="text-[#647196] font-bold flex items-center gap-2 cursor-pointer group"
-        >
-          <span>＜</span><span className='group-hover:underline'> Go Back</span>
-        </button>
-        <Button
-          onClick={onEdit}
-          type="primary"
-          className="bg-[#4661E6] hover:bg-[#7C91F9] h-11 px-6 rounded-xl font-bold border-none"
-        >
-          Edit Feedback
-        </Button>
-      </div>
+    <div className="max-w-7xl mx-auto p-6 md:p-10 min-h-screen">
 
       {/* 2. Main Feedback Card */}
       <div className="bg-white p-7 rounded-xl flex items-center shadow-sm mb-6">

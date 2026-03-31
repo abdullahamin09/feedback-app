@@ -72,7 +72,7 @@ export default function Page () {
     };
 
     return (
-        <div>
+        <div className=" bg-[#F2F4FF]">
             <FeedbackDetail feedback={feedback} comments={comments} onSubmit={handleAddComment} onBack={handleOnBack} onEdit={handleEditFeedback} onUpvote={handleUpvote} />
             <FeedbackModal isVisible={isModalVisible} editingFeedback={feedback} onCancel={closeModal} onSubmit={(values) => console.log(values)} />
         </div>
