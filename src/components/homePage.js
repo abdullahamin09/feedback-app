@@ -3,10 +3,12 @@ import React, { useMemo, useState, useEffect } from "react";
 import FeedbackModal from "@/components/feedbackModal";
 import SuggestionCard from "./cards/feedbackCard";
 import { useDispatch, useSelector } from "react-redux";
+import { addSuggestion, updateSuggestion, toggleUpvote, deleteSuggestion } from '@/store/feedbackSlice';
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const ProductFeedbackApp = ( { filterCategory, setFilterCategory } ) => {
     const [isModalVisible, setIsModalVisible] = React.useState(false);
+    const [editingFeedback, setEditingFeedback] = React.useState(null);
     // ui state local
     const [sortOption, setSortOption] = React.useState('Most Upvotes');
     const dispatch = useDispatch();
@@ -16,10 +18,11 @@ const ProductFeedbackApp = ( { filterCategory, setFilterCategory } ) => {
 
     const openModal = () => {
         setIsModalVisible(true);
-        // router.push('/add'); 
+        setEditingFeedback(null);
     };
     const closeModal = () => {
         setIsModalVisible(false);
+        setEditingFeedback(null);
         // router.push('/'); 
     };
 
@@ -34,8 +37,16 @@ const ProductFeedbackApp = ( { filterCategory, setFilterCategory } ) => {
         dispatch(addSuggestion(payload));
         closeModal();
     }
+    const handleEdit = (payload) => {
+        dispatch(updateSuggestion({ id: editingFeedback.id, ...payload }));
+        closeModal();
+    }
     const handleUpvotes = (id) => {
         dispatch(toggleUpvote(id));
+    }
+
+    const handleDelete = (id) => {
+        dispatch(deleteSuggestion(id));
     }
 
     const handleView = (item) => {
@@ -44,12 +55,15 @@ const ProductFeedbackApp = ( { filterCategory, setFilterCategory } ) => {
 
     const filtered = suggestions.filter((s) => filterCategory === 'All' || s.category === filterCategory);
 
-    const sorted = [...filtered].sort((a, b) => {
-        if (sortOption === 'Most Upvotes') return b.upvotes - a.upvotes;
-        if (sortOption === 'Least Upvotes') return a.upvotes - b.upvotes;
-        if (sortOption === 'Most Comments') return b.comments - a.comments;
-        if (sortOption === 'Least Comments') return a.comments - b.comments;
-    });
+    const sorted = React.useMemo(() => {
+        return [...filtered].sort((a, b) => {
+            if (sortOption === 'Most Upvotes') return b.upvotes - a.upvotes;
+            if (sortOption === 'Least Upvotes') return a.upvotes - b.upvotes;
+            if (sortOption === 'Most Comments') return b.comments - a.comments;
+            if (sortOption === 'Least Comments') return a.comments - b.comments;
+            return 0;
+        });
+    }, [filtered, sortOption]);
 
     return (
         <div className="">
@@ -79,16 +93,20 @@ const ProductFeedbackApp = ( { filterCategory, setFilterCategory } ) => {
 
             {/* Conditional Rendering: List vs Empty State */}
             <div className="flex flex-col">
-                {suggestions.length > 0 ? (
-                    suggestions.map((item) => (
+                {sorted.length > 0 ? (
+                    sorted.map((item) => (
                         <SuggestionCard
                             key={item.id}
+                            id={item.id}
                             upvotes={item.upvotes}
+                            upvoted={item.upvoted}
                             title={item.title}
-                            desc={item.desc}
+                            description={item.description}
                             category={item.category}
                             comments={item.comments}
-                            onClick={() => handleView(item)}
+                            onView={() => handleView(item)}
+                            onUpvote={handleUpvotes}
+                            onEdit={() => { setEditingFeedback(item); setIsModalVisible(true); }}
                         />
                     ))
                 ) : (
@@ -105,7 +123,7 @@ const ProductFeedbackApp = ( { filterCategory, setFilterCategory } ) => {
                     </div>
                 )}
             </div>
-            <FeedbackModal isVisible={isModalVisible} onCancel={closeModal} onSubmit={(values) => console.log(values)} />
+            <FeedbackModal isVisible={isModalVisible} onCancel={closeModal} onSubmit={editingFeedback ? handleEdit : handleAdd} editingFeedback={editingFeedback} onDelete={handleDelete} />
 
         </div>
     );

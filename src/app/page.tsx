@@ -4,13 +4,21 @@ import Sidebar from "@/components/sidebar";
 import HomePage from "@/components/homePage";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
+import FeedbackModal from "@/components/feedbackModal";
 
 export default function Home() {
   const router = useRouter();
   const [filterCategory, setFilterCategory] = useState('All');
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const suggestions = useSelector((state: any) => state.feedback?.suggestions ?? []) as any[];
-
+  const openModal = () => {
+    setIsModalVisible(true);
+  };
+  const closeModal = () => {
+    setIsModalVisible(false);
+    // router.push('/'); 
+  };
 
   const roadmapCounts = useMemo(() => {
     return {
@@ -28,7 +36,7 @@ export default function Home() {
           setFilterCategory={setFilterCategory}
           roadmapCounts={roadmapCounts}
           openRoadmap={() => router.push('/roadmap')}
-          openAddFeedback={() => router.push('/add')}
+          openAddFeedback={openModal}
         />
       </aside>
       <main className="flex-1 flex flex-col gap-6">
@@ -37,6 +45,7 @@ export default function Home() {
             filterCategory={filterCategory}
             setFilterCategory={setFilterCategory}
           />
+          <FeedbackModal isVisible={isModalVisible} onCancel={closeModal} onSubmit={(values: any) => console.log(values)} editingFeedback={null} onDelete={() => {}} />
         </Suspense>
       </main>
     </div>

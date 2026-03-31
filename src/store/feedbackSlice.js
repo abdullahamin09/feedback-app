@@ -18,7 +18,7 @@ const feedbackSlice = createSlice({
             const newSuggestions = {
                 id: Date.now(),
                 title: payload.title,
-                description: payload.desc,
+                description: payload.description,
                 category: payload.category || "Feature",
                 upvotes: 0,
                 comments: 0,
@@ -55,10 +55,12 @@ const feedbackSlice = createSlice({
 
         addComment: (state, action) => {
             const { suggestionId, comment } = action.payload;
-            if (!state.comments[suggestionId]) {
-                state.comments[suggestionId] = [];
+            const existing = state.comments.find((c) => c.suggestionId === suggestionId);
+            if (existing) {
+                existing.comments.push(comment);
+            } else {
+                state.comments.push({ suggestionId, comments: [comment] });
             }
-            state.comments[suggestionId].push(comment);
             const item = state.suggestions.find((s) => s.id === suggestionId);
             if (item) {
                 item.comments += 1;

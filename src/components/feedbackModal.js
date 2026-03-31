@@ -1,19 +1,45 @@
 import React from 'react';
-import { Modal, Form, Input, Select, Button } from 'antd';
+import { Modal, Form, Input, Select, Button, message } from 'antd';
 
 const { TextArea } = Input;
 
-const FeedbackModal = ({ isVisible, onCancel, onSubmit }) => {
+const FeedbackModal = ({ isVisible, onCancel, onSubmit, editingFeedback, onDelete }) => {
     const [form] = Form.useForm();
+
+    React.useEffect(() => {
+        if (editingFeedback) {
+            form.setFieldsValue(editingFeedback);
+        } else {
+            form.resetFields();
+        }
+    }, [editingFeedback, form]);
 
     const handleFinish = (values) => {
         onSubmit(values);
         form.resetFields();
     };
 
+    const handleDelete = () => {
+        if (!editingFeedback) return;
+
+        Modal.confirm({
+            title: 'Are you sure you want to delete this feedback?',
+            okText: 'Delete',
+            okType: 'danger',
+            cancelText: 'Cancel',
+            onOk() {
+                if (onDelete) onDelete(editingFeedback.id);
+                console.log('Deleted feedback with ID:', editingFeedback.id);
+                form.resetFields();
+                message.success('Feedback deleted');
+                if (onCancel) onCancel();
+            }
+        });
+    };
+
     return (
         <Modal
-            title={<h2 className="text-[#3A4374] font-bold text-2xl px-2 pt-4">Create New Feedback</h2>}
+            title={<h2 className="text-[#3A4374] font-bold text-2xl px-2 pt-4">{editingFeedback ? 'Edit Feedback' : 'Create New Feedback'}</h2>}
             open={isVisible}
             onCancel={onCancel}
             footer={null} // We'll use our custom buttons in the form
@@ -37,6 +63,8 @@ const FeedbackModal = ({ isVisible, onCancel, onSubmit }) => {
                     <Input
                         placeholder="Add a short, descriptive headline"
                         className="bg-[#F7F8FD] border-none p-3 rounded-lg"
+                        value={form.getFieldValue('title')}
+                        onChange={(e) => form.setFieldsValue({ title: e.target.value })}
                     />
                 </Form.Item>
 
@@ -45,7 +73,11 @@ const FeedbackModal = ({ isVisible, onCancel, onSubmit }) => {
                     label={<span className="font-bold text-[#3A4374]">Category</span>}
                     name="category"
                 >
-                    <Select className="h-12 border-none rounded-lg bg-[#F7F8FD]">
+                    <Select className="h-12 border-none rounded-lg bg-[#F7F8FD]"
+
+                        value={form.getFieldValue('category')}
+                        onChange={(e) => form.setFieldsValue({ category: e })}
+                    >
                         <Select.Option value="Feature">Feature</Select.Option>
                         <Select.Option value="UI">UI</Select.Option>
                         <Select.Option value="UX">UX</Select.Option>
@@ -59,7 +91,10 @@ const FeedbackModal = ({ isVisible, onCancel, onSubmit }) => {
                     label={<span className="font-bold text-[#3A4374]">Status</span>}
                     name="status"
                 >
-                    <Select className="h-12 border-none rounded-lg bg-[#F7F8FD]">
+                    <Select className="h-12 border-none rounded-lg bg-[#F7F8FD]"
+                        value={form.getFieldValue('status')}
+                        onChange={(e) => form.setFieldsValue({ status: e })}
+                    >
                         <Select.Option value="Planned">Planned</Select.Option>
                         <Select.Option value="In-Progress">In-Progress</Select.Option>
                         <Select.Option value="Live">Live</Select.Option>
@@ -69,24 +104,29 @@ const FeedbackModal = ({ isVisible, onCancel, onSubmit }) => {
                 {/* Feedback Details */}
                 <Form.Item
                     label={<span className="font-bold text-[#3A4374]">Feedback Details</span>}
-                    name="desc"
+                    name="description"
                     rules={[{ required: true, message: 'Please add details' }]}
                 >
                     <TextArea
                         rows={4}
                         className="bg-[#F7F8FD] border-none p-3 rounded-lg"
+                        value={form.getFieldValue('description')}
+                        onChange={(e) => form.setFieldsValue({ description: e.target.value })}
                     />
                 </Form.Item>
 
                 {/* Custom Buttons Footer */}
                 <div className="flex justify-between items-center mt-10">
-                    <Button
-                        danger
-                        type="primary"
-                        className="bg-[#D73737] hover:bg-[#E95757] h-12 px-8 font-bold rounded-xl border-none"
-                    >
-                        Delete
-                    </Button>
+                    {editingFeedback && (
+                        <Button
+                            danger
+                            type="primary"
+                            onClick={handleDelete}
+                            className="bg-[#D73737] hover:bg-[#E95757] h-12 px-8 font-bold rounded-xl border-none"
+                        >
+                            Delete
+                        </Button>
+                    )}
 
                     <div className="flex gap-4">
                         <Button
@@ -100,7 +140,7 @@ const FeedbackModal = ({ isVisible, onCancel, onSubmit }) => {
                             htmlType="submit"
                             className="bg-[#AD1FEA] hover:bg-[#C75AF6] h-12 px-8 font-bold rounded-xl border-none"
                         >
-                            Add Feedback
+                            {editingFeedback ? 'Edit Feedback' : 'Add Feedback'}
                         </Button>
                     </div>
                 </div>
