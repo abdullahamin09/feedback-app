@@ -1,10 +1,12 @@
 
+import { Suspense } from 'react';
 import HomePage from "@/components/homePage";
+
 const AddFeedback = () => {
     return (
-        <div>
+        <Suspense fallback={<div>Loading...</div>}>
             <HomePage />
-        </div>
+        </Suspense>
     );
 }
 
