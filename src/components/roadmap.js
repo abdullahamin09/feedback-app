@@ -1,7 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import CategoryFeedbackCard from './cards/categoryFeedbackCard';
-import { ArrowLeft, Plus } from 'lucide-react';
 import { useDispatch, useSelector } from "react-redux";
 
 // Category Section Component
